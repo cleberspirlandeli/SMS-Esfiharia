@@ -2,7 +2,7 @@
  * Created by Cleber Rezende on 21/11/2018.
  */
 'use strict'
-
+const async = require('async');
 const ClienteValidation = require('./clienteValidation.js');
 //const ClienteRepository = require('./clienteRepository.js');
 
@@ -13,7 +13,7 @@ module.exports = {
    // alterarCliente
 };
 
-async function inserirCliente(req, res) {
+function inserirCliente(req, res) {
 
     const params = {
         nomeCliente: req.body.nomeCliente ? req.body.nomeCliente : null,
@@ -22,31 +22,33 @@ async function inserirCliente(req, res) {
         sexo: req.body.sexo ? req.body.sexo : null
     };
 
-    try {
-        const resValidation = await ClienteValidation.inserirCliente(params);
-        
-        res.status(200).json({ data: resValidation });
-/*
-        if (resValidation.success) {
-
-            res.status(500).json({ httpCode: 500, data: resRepository });
-
-        } else {
-            res.status(resValidation.httpCode)
-                .json({
-                    httpCode: resValidation.httpCode,
-                    data: {
-                        success: resValidation.success,
-                        message: resValidation.message[0].message
-                    }
+    async.waterfall([
+        (callback) => {
+            ClienteValidation.inserirCliente(params, (err, httpCode, result) => {
+                if (err) {
+                    callback(err, httpCode, result);
+                } else {
+                    callback(null, httpCode, result);
                 }
-                );
+            });
+        },
+        (httpCode, result, callback) => {
+            LoginRepository.login(params, (err, httpCode, result) => {
+                if (err) {
+                    callback(err, httpCode, result);
+                } else {
+                    callback(null, httpCode, result);
+                }
+            });
         }
-*/        
-    } catch (e) {
-        
-        res.status(200).json({ data: resValidation });
-    }
+    ], (err, httpCode, result) => {
+        if (err) {
+            res.status(httpCode).json({data: result});
+        } else {
+            res.status(httpCode).json({data: result});
+        }
+    });
+    
 }
 
 /*

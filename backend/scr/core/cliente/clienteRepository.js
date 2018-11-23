@@ -1,35 +1,45 @@
 /**
  * Created by Cleber Rezende on 21/11/2018.
  */
-/*
+
 'use strict'
 
-const connectionString = require('./../../config/database/coneccao.js')
+const connectionString = require('./../../../config/database/coneccao.js');
 const { Pool } = require('pg')
 const pg = new Pool({ connectionString: connectionString });
 
 module.exports = {
-    inserirCliente,
-    listarCliente,
-    excluirCliente,
-    alterarCliente
+    inserirCliente
 };
 
-async function inserirCliente(params) {
-    const res = await pg.query("SELECT * FROM PUBLIC.INSERIRPRODUTO($1, $2, $3, $4, $5);",
+function inserirCliente(params, callback) {
+    let row;
+    pg.query("SELECT * FROM PUBLIC.INSERIRCLIENTE($1, $2);",
         [
-            params.idInsercao,
-            params.descricao,
-            params.codigoProduto,
-            params.valorVenda,
-            params.quantidade,
-        ]
-    );
-
-    var result = res.rows[0].inserirproduto;
-    return result;
+            params.usuario,
+            params.senha
+        ], (err, data) => {
+            if (err) {
+                err = {
+                    httpCode: 500,
+                    message: `Erro ao inserir cliente: ERROR (' ${err.message} ')`
+                };
+            }
+            else if (data.rows.length == 0) {
+                var err = {
+                    httpCode: 403,
+                    message: `Usuário ou senha inválido`,
+                };
+            }
+            if (!err) {
+                row = data.rows;
+            }
+            callback(err, (err ? err.httpCode : 200), row);
+        }
+    )
 }
 
+/*
 async function listarCliente(params) {
     const res = await pg.query("SELECT * FROM PUBLIC.LISTARPRODUTO($1);",
         [

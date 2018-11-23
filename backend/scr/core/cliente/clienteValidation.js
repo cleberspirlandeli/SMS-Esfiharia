@@ -12,8 +12,8 @@ module.exports = {
     //alterarCliente
 };
 
-async function inserirCliente(params) {
-
+async function inserirCliente(params, callback) {
+    console.log('2');
     let valParams = new ValidatiorParams();
     valParams.clear();
 
@@ -38,9 +38,9 @@ async function inserirCliente(params) {
 
     // Se os dados forem inválidos
     if (!valParams.isValid()) {
-        return { success: false, httpCode: 400, message: valParams.errors() }
+        callback (false, 400, valParams.errors());
     } else {
-        return { success: true, httpCode: 200, message: null }
+        callback (true, 200, null);
     }
 }
 
