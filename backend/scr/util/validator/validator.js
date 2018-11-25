@@ -68,9 +68,18 @@ Validation.prototype.isEqual = (value, eq, message) => {
         errors.push({ message: message });
 }
 
+// _value recebe um strig CPF para ser comparado
+Validation.prototype.isCpf = (value, message) => {
+    // Mascara de CPF
+    let maskCpf = /[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/;
+    if (!maskCpf.test(value)) {
+        errors.push({ message: message });
+    }
+}
+
 // retorna os erros encontrados
-Validation.prototype.errors = () => { 
-    return errors; 
+Validation.prototype.errors = () => {
+    return errors;
 }
 
 // limpa a variável de erros

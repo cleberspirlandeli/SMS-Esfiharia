@@ -4,13 +4,13 @@
 'use strict'
 const async = require('async');
 const ClienteValidation = require('./clienteValidation.js');
-//const ClienteRepository = require('./clienteRepository.js');
+const ClienteRepository = require('./clienteRepository.js');
 
 module.exports = {
-    inserirCliente
-    //listarCliente,
-    //excluirCliente,
-   // alterarCliente
+    inserirCliente,
+    listarCliente,
+    excluirCliente,
+    alterarCliente
 };
 
 function inserirCliente(req, res) {
@@ -33,7 +33,7 @@ function inserirCliente(req, res) {
             });
         },
         (httpCode, result, callback) => {
-            LoginRepository.login(params, (err, httpCode, result) => {
+            ClienteRepository.inserirCliente(params, (err, httpCode, result) => {
                 if (err) {
                     callback(err, httpCode, result);
                 } else {
@@ -43,154 +43,118 @@ function inserirCliente(req, res) {
         }
     ], (err, httpCode, result) => {
         if (err) {
-            res.status(httpCode).json({data: result});
+            res.status(httpCode).json({ data: result });
         } else {
-            res.status(httpCode).json({data: result});
+            res.status(httpCode).json({ data: result });
         }
     });
-    
+
 }
 
-/*
 
-async function listarCliente(req, res) {
+function listarCliente(req, res) {
 
     const params = {
-        idProduto: req.params.idproduto ? req.params.idproduto : null
+        idCliente: req.params.idCliente ? req.params.idCliente : null
     };
-
-    try {
-        const resValidation = await ClienteValidation.listarProduto(params);
-        if (resValidation.success) {
-            const resRepository = await ClienteRepository.listarCliente(params);
-
-            if (resRepository.length == 0)
-                res.status(204).json({ httpCode: 204, data: null });
-            else if (resRepository.length > 0)
-                res.status(200).json({ httpCode: 200, data: resRepository });
-            else
-                res.status(500).json({ httpCode: 500, data: resRepository });
-
-        } else {
-            res.status(resValidation.httpCode)
-                .json({
-                    httpCode: resValidation.httpCode,
-                    data: {
-                        success: resValidation.success,
-                        message: resValidation.message[0].message
-                    }
+    //console.log(params.idCliente);
+    async.waterfall([
+        (callback) => {
+            ClienteValidation.listarCliente(params, (err, httpCode, result) => {
+                if (err) {
+                    callback(err, httpCode, result);
+                } else {
+                    callback(null, httpCode, result);
                 }
-                );
+            });
+        },
+        (httpCode, result, callback) => {
+            ClienteRepository.listarCliente(params, (err, httpCode, result) => {
+                if (err) {
+                    callback(err, httpCode, result);
+                } else {
+                    callback(null, httpCode, result);
+                }
+            });
         }
-    } catch (e) {
-        if (e.message === 'invalid base64 end sequence' ||
-            e.message.includes('invalid input syntax for integer'))
-            e = 'Sua sessão expirou por inatividade. Por favor, efetue login novamente.';
-
-        res.status(500).json({
-            httpCode: 500,
-            data: {
-                success: false,
-                message: e
-            }
+    ], (err, httpCode, result) => {
+        if (err) {
+            res.status(httpCode).json({ data: result });
+        } else {
+            res.status(httpCode).json({ data: result });
         }
-        );
-    }
+    });
 }
 
 
-async function excluirCliente(req, Cliente
+function excluirCliente(req, res) {
     const params = {
-        idAlteracao: req.params.idalteracao ? req.params.idalteracao : null,
-        idProduto: req.params.idproduto ? req.params.idproduto : null
+        idCliente: req.params.idCliente ? req.params.idCliente : null
     };
 
-    try {
-        const resValidation = await ClienteValidation.excluirProduto(params);
-        if (resValidation.success) {
-            const resRepository = await ClienteRepository.excluirCliente(paCliente
-            if (resRepository.success)
-                res.status(200).json({ httpCode: 200, data: resRepository });
-            else if (resRepository.message.includes('Somente Gestores podem realizar a exclusão'))
-                res.status(403).json({ httpCode: 403, data: resRepository });
-            else
-                res.status(500).json({ httpCode: 500, data: resRepository });
-
-        } else {
-            res.status(resValidation.httpCode)
-                .json({
-                    httpCode: resValidation.httpCode,
-                    data: {
-                        success: resValidation.success,
-                        message: resValidation.message[0].message
-                    }
+    async.waterfall([
+        (callback) => {
+            ClienteValidation.excluirCliente(params, (err, httpCode, result) => {
+                if (err) {
+                    callback(err, httpCode, result);
+                } else {
+                    callback(null, httpCode, result);
                 }
-                );
+            });
+        },
+        (httpCode, result, callback) => {
+            ClienteRepository.excluirCliente(params, (err, httpCode, result) => {
+                if (err) {
+                    callback(err, httpCode, result);
+                } else {
+                    callback(null, httpCode, result);
+                }
+            });
         }
-    } catch (e) {
-        if (e.message === 'invalid base64 end sequence')
-            e = 'Sua sessão expirou por inatividade. Por favor, efetue login novamente.';
-
-        res.status(500).json({
-            httpCode: 500,
-            data: {
-                success: false,
-                message: e
-            }
+    ], (err, httpCode, result) => {
+        if (err) {
+            res.status(httpCode).json({ data: result });
+        } else {
+            res.status(httpCode).json({ data: result });
         }
-        );
-    }
+    });
 }
 
 
-async function alterarProduto(req, res) {
+function alterarCliente(req, res) {
 
     const params = {
-        idAlteracao: req.params.idalteracao ? req.params.idalteracao : null,
-        idProduto: req.params.idproduto ? req.params.idproduto : null,
-        descricao: req.body.descricao ? req.body.descricao : null,
-        codigoProduto: req.body.codigoProduto ? req.body.codigoProduto : null,
-        valorVenda: req.body.valorVenda ? req.body.valorVenda : null,
-        quantidade: req.body.quantidade ? req.body.quantidade : null,
-        ativo: req.body.ativo ? req.body.ativo : null
+        idCliente: req.params.idCliente ? req.params.idCliente : null,
+        nomeCliente: req.body.nomeCliente ? req.body.nomeCliente : null,
+        cpfCliente: req.body.cpfCliente ? req.body.cpfCliente : null,
+        dataNascimento: req.body.dataNascimento ? req.body.dataNascimento : null,
+        sexo: req.body.sexo ? req.body.sexo : null
     };
 
-    try {
-        const resValidation = await ClienteValidation.alterarProduto(params);
-        if (resValidation.success) {
-            const resRepository = await ClienteRepository.alterarProduto(params);
-
-            if (resRepository.success)
-                res.status(200).json({ httpCode: 200, data: resRepository });
-            else if (resRepository.message.includes('Somente Gestores podem realizar alteração'))
-                res.status(403).json({ httpCode: 403, data: resRepository });
-            else if (resRepository.message.includes('produto é menor do que a quantidade que se deseja'))
-                res.status(400).json({ httpCode: 400, data: resRepository });
-
-        } else {
-            res.status(resValidation.httpCode)
-                .json({
-                    httpCode: resValidation.httpCode,
-                    data: {
-                        success: resValidation.success,
-                        message: resValidation.message[0].message
-                    }
+    async.waterfall([
+        (callback) => {
+            ClienteValidation.alterarCliente(params, (err, httpCode, result) => {
+                if (err) {
+                    callback(err, httpCode, result);
+                } else {
+                    callback(null, httpCode, result);
                 }
-                );
+            });
+        },
+        (httpCode, result, callback) => {
+            ClienteRepository.alterarCliente(params, (err, httpCode, result) => {
+                if (err) {
+                    callback(err, httpCode, result);
+                } else {
+                    callback(null, httpCode, result);
+                }
+            });
         }
-    } catch (e) {
-        if (e.message === 'invalid base64 end sequence')
-            e = 'Sua sessão expirou por inatividade. Por favor, efetue login novamente.';
-
-        res.status(500).json({
-            httpCode: 500,
-            data: {
-                success: false,
-                message: e
-            }
+    ], (err, httpCode, result) => {
+        if (err) {
+            res.status(httpCode).json({ data: result });
+        } else {
+            res.status(httpCode).json({ data: result });
         }
-        );
-    }
+    });
 }
-
-*/

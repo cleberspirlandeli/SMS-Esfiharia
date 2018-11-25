@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION public.criptografar(texto INTEGER)
+CREATE OR REPLACE FUNCTION public.criptografar(texto BIGINT)
   RETURNS VARCHAR AS $$
 
 /*
@@ -31,7 +31,6 @@ $$ LANGUAGE plpgsql;
 
 
 
-
 CREATE OR REPLACE FUNCTION public.descriptografar(texto VARCHAR)
   RETURNS INTEGER AS $$
 
@@ -42,24 +41,26 @@ Objetivo..........: Descriptografar um texto em número
 Autor.............: Cleber Spirlandeli
 Data..............: 22/11/2018
 Ex................:
-    SELECT * FROM Public.descriptografar('NQ=='); -- 10
+    SELECT * FROM Public.descriptografar('MTU='); -- 10
 */
 
 DECLARE 
-        descriptografar   TEXT;
+        descriptografar   TEXT;   
+		vErrorProcedure   TEXT;
+        vErrorMessage     TEXT;
 
 BEGIN
   
   descriptografar = DECODE(texto, 'base64');
     
-  --RAISE NOTICE 'var %', descriptografar;
+  RAISE NOTICE 'var %', descriptografar;
 
-    RETURN descriptografar :: INTEGER;
+   RETURN descriptografar :: BIGINT;   
 
 
-   EXCEPTION WHEN OTHERS
-   THEN
-     RETURN 0 :: INTEGER;
+  EXCEPTION WHEN OTHERS
+  THEN
+	RETURN 0 :: BIGINT;
 
 END;
 $$ LANGUAGE plpgsql;

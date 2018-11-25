@@ -9,74 +9,151 @@ const { Pool } = require('pg')
 const pg = new Pool({ connectionString: connectionString });
 
 module.exports = {
-    inserirCliente
+    inserirCliente,
+    listarCliente,
+    excluirCliente,
+    alterarCliente
 };
 
 function inserirCliente(params, callback) {
+
+    // TRATAMENTO DAS VARIAVEIS
     let row;
-    pg.query("SELECT * FROM PUBLIC.INSERIRCLIENTE($1, $2);",
+    params.cpfCliente = params.cpfCliente.replace(".", "").replace(".", "");
+    params.cpfCliente = params.cpfCliente.replace("-", "");
+    if (params.sexo == 'Feminino') {
+        params.sexo = 'F';
+    } else {
+        params.sexo = 'M';
+    }
+
+    pg.query("SELECT * FROM PUBLIC.INSERIRCLIENTE($1, $2, $3, $4);",
         [
-            params.usuario,
-            params.senha
+            params.nomeCliente,
+            params.cpfCliente,
+            params.dataNascimento,
+            params.sexo
         ], (err, data) => {
+            // if (err) {
+            //     console.log(err)
+            // } else {
+            //     console.log(data)
+            // }
+
             if (err) {
                 err = {
+                    sucess: false,
                     httpCode: 500,
                     message: `Erro ao inserir cliente: ERROR (' ${err.message} ')`
                 };
             }
             else if (data.rows.length == 0) {
                 var err = {
+                    sucess: false,
                     httpCode: 403,
-                    message: `Usuário ou senha inválido`,
+                    message: 'Usuário não cadastrado.'
                 };
             }
             if (!err) {
-                row = data.rows;
+                row = data.rows[0].inserircliente;
             }
-            callback(err, (err ? err.httpCode : 200), row);
+            callback(err, (err ? err.httpCode : 201), row || err);
+
         }
     )
 }
 
-/*
-async function listarCliente(params) {
-    const res = await pg.query("SELECT * FROM PUBLIC.LISTARPRODUTO($1);",
-        [
-            params.idProduto
-        ]
-    );
 
-    var result = res.rows;
-    return result;
+function listarCliente(params, callback) {
+    //console.log(params.idCliente);
+
+    pg.query("SELECT * FROM PUBLIC.LISTARCLIENTE($1);",
+        [
+            params.idCliente
+        ], (err, data) => {
+            // if (err) {
+            //     console.log(err)
+            // } else {
+            //     console.log(data)
+            // }
+
+            if (data.rows.length == 0) {
+                err = {
+                    httpCode: 204,
+                    message: 'Cliente não encontrado.'
+                };
+            } else {
+                let result = data.rows;
+            }
+
+            callback(err, (err ? err.httpCode : 200), result || err);
+        }
+    );
 }
 
-async function excluirCliente(params) {
-    const res = await pg.query("SELECT * FROM PUBLIC.EXCLUIRPRODUTO($1, $2);",
+
+function excluirCliente(params, callback) {
+    console.log(params.idCliente)
+    pg.query("SELECT * FROM PUBLIC.EXCLUIRCLIENTE($1);",
         [
-            params.idAlteracao,
-            params.idProduto
-        ]
+            params.idCliente
+        ], (err, data) => {
+            // if (err) {
+            //     console.log(err)
+            // } else {
+            //     console.log(data)
+            // }
+
+            if (err) {
+                err = {
+                    sucess: false,
+                    httpCode: 500,
+                    message: `Erro ao inserir cliente: ERROR (' ${err.message} ')`
+                };
+            }
+
+            let result = data.rows[0].excluircliente;
+            callback(err, (err ? err.httpCode : 200), result || err);
+        }
     );
-    var result = res.rows[0].excluirproduto;
-    return result;
 }
 
-async function alterarCliente(params) {
-    const res = await pg.query("SELECT * FROM PUBLIC.ALTERARPRODUTO($1, $2, $3, $4, $5, $6, $7);",
+
+function alterarCliente(params, callback) {
+
+    // TRATAMENTO DAS VARIAVEIS
+    params.cpfCliente = params.cpfCliente.replace(".", "").replace(".", "");
+    params.cpfCliente = params.cpfCliente.replace("-", "");
+    if (params.sexo == 'Feminino') {
+        params.sexo = 'F';
+    } else {
+        params.sexo = 'M';
+    }
+
+    pg.query("SELECT * FROM PUBLIC.ALTERARCLIENTE($1, $2, $3, $4, $5);",
         [
-            params.idAlteracao,
-            params.idProduto,
-            params.descricao,
-            params.codigoProduto,
-            params.valorVenda,
-            params.quantidade,
-            params.ativo
-        ]
+            params.idCliente,
+            params.nomeCliente,
+            params.cpfCliente,
+            params.dataNascimento,
+            params.sexo
+        ], (err, data) => {
+            // if (err) {
+            //     console.log(err)
+            // } else {
+            //     console.log(data)
+            // }
+
+            if (err) {
+                err = {
+                    sucess: false,
+                    httpCode: 500,
+                    message: `Erro ao inserir cliente: ERROR (' ${err.message} ')`
+                };
+            }
+
+            let result = data.rows[0].alterarcliente;
+            callback(err, (err ? err.httpCode : 200), result || err);
+        }
     );
-
-    var result = res.rows[0].alterarproduto;
-    return result;
 }
-
-*/
