@@ -35,6 +35,45 @@ async function inserirCliente(params, callback) {
     valParams.isMinLen(params.sexo, 8, 'O sexo do cliente deve ser Masculino ou Feminino');
     valParams.isMaxLen(params.sexo, 9, 'O sexo do cliente deve ser Masculino ou Feminino');
 
+    // CEP
+    valParams.isString(params.cep, 'O CEP do cliente deve ser um texto');
+    valParams.isFixedLen(params.cep, 10, 'O CEP do cliente esta inválido');
+
+    // Rua
+    valParams.isString(params.rua, 'A rua do cliente deve ser um texto');
+    valParams.isMinLen(params.rua, 1, 'A rua do cliente deve ter no mínimo uma letra');
+    valParams.isMaxLen(params.rua, 100, 'A rua do cliente deve ter no máximo 100 letras');
+
+    // Número
+    valParams.isNumber(params.numero, 'O número do cliente deve ser um número');
+
+    // Bairro
+    valParams.isString(params.bairro, 'O bairro do cliente deve ser um texto');
+    valParams.isMinLen(params.bairro, 1, 'O bairro do cliente deve ter no mínimo uma letra');
+    valParams.isMaxLen(params.bairro, 100, 'O bairro do cliente deve ter no máximo 100 letras');
+
+    // Cidade
+    valParams.isString(params.cidade, 'A cidade do cliente deve ser um texto');
+    valParams.isMinLen(params.cidade, 1, 'A cidade do cliente deve ter no mínimo uma letra');
+    valParams.isMaxLen(params.cidade, 100, 'A cidade do cliente deve ter no máximo 100 letras');
+
+    // Complemento
+    valParams.isString(params.complemento, 'O complemento do cliente deve ser um texto');
+    valParams.isMinLen(params.complemento, 1, 'O complemento do cliente deve ter no mínimo uma letra');
+    valParams.isMaxLen(params.complemento, 100, 'O complemento do cliente deve ter no máximo 100 letras');
+
+    // IdTipoTelefone
+    valParams.isRequired(params.idTipoTelefone, 'O tipo de telefone do cliente é obrigatório');
+    valParams.isNumber(params.idTipoTelefone, 'O tipo de telefone do cliente deve ser um texto');
+    valParams.isMinLen(params.idTipoTelefone, 1, 'O tipo de telefone do cliente esta inválido (mínimo)');
+    valParams.isMaxLen(params.idTipoTelefone, 20, 'O tipo de telefone do cliente esta inválido (máximo)');
+
+    // Telefone
+    valParams.isRequired(params.telefone, 'O telefone do cliente é obrigatório');
+    valParams.isNumber(params.telefone, 'O telefone do cliente deve ser somente números');
+    valParams.isMinLen(params.telefone, 8, 'O telefone do cliente deve ter no mínimo 8 números');
+    valParams.isMaxLen(params.telefone, 14, 'O telefone do cliente deve ter no máximo 11 números');
+
     // Se os dados forem inválidos
     if (!valParams.isValid()) {
         callback(true, 400, valParams.errors());

@@ -19,7 +19,15 @@ function inserirCliente(req, res) {
         nomeCliente: req.body.nomeCliente ? req.body.nomeCliente : null,
         cpfCliente: req.body.cpfCliente ? req.body.cpfCliente : null,
         dataNascimento: req.body.dataNascimento ? req.body.dataNascimento : null,
-        sexo: req.body.sexo ? req.body.sexo : null
+        sexo: req.body.sexo ? req.body.sexo : null,
+        cep: req.body.cep ? req.body.cep : null,
+        rua: req.body.rua ? req.body.rua : null,
+        numero: req.body.numero ? req.body.numero : null,
+        bairro: req.body.bairro ? req.body.bairro : null,
+        cidade: req.body.cidade ? req.body.cidade : null,
+        complemento: req.body.complemento ? req.body.complemento : null,
+        idTipoTelefone: req.body.idTipoTelefone ? req.body.idTipoTelefone : null,
+        telefone: req.body.telefone ? req.body.telefone : null
     };
 
     async.waterfall([
@@ -128,7 +136,15 @@ function alterarCliente(req, res) {
         nomeCliente: req.body.nomeCliente ? req.body.nomeCliente : null,
         cpfCliente: req.body.cpfCliente ? req.body.cpfCliente : null,
         dataNascimento: req.body.dataNascimento ? req.body.dataNascimento : null,
-        sexo: req.body.sexo ? req.body.sexo : null
+        sexo: req.body.sexo ? req.body.sexo : null,
+        cep: req.body.cep ? req.body.cep : null,
+        rua: req.body.rua ? req.body.rua : null,
+        numero: req.body.numero ? req.body.numero : null,
+        bairro: req.body.bairro ? req.body.bairro : null,
+        cidade: req.body.cidade ? req.body.cidade : null,
+        complemento: req.body.complemento ? req.body.complemento : null,
+        idTipoTelefone: req.body.idTipoTelefone ? req.body.idTipoTelefone : null,
+        telefone: req.body.telefone ? req.body.telefone : null
     };
 
     async.waterfall([

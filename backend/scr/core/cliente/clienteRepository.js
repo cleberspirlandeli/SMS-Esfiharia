@@ -21,18 +21,27 @@ function inserirCliente(params, callback) {
     let row;
     params.cpfCliente = params.cpfCliente.replace(".", "").replace(".", "");
     params.cpfCliente = params.cpfCliente.replace("-", "");
+    params.cep = params.cep.replace(".", "").replace("-", "");
     if (params.sexo == 'Feminino') {
         params.sexo = 'F';
     } else {
         params.sexo = 'M';
     }
 
-    pg.query("SELECT * FROM PUBLIC.INSERIRCLIENTE($1, $2, $3, $4);",
+    pg.query("SELECT * FROM PUBLIC.INSERIRCLIENTE($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);",
         [
             params.nomeCliente,
             params.cpfCliente,
             params.dataNascimento,
-            params.sexo
+            params.sexo,
+            params.cep,
+            params.rua,
+            params.numero,
+            params.bairro,
+            params.cidade,
+            params.complemento,
+            params.idTipoTelefone,
+            params.telefone
         ], (err, data) => {
             // if (err) {
             //     console.log(err)
@@ -83,7 +92,7 @@ function listarCliente(params, callback) {
                     message: 'Cliente não encontrado.'
                 };
             } else {
-                let result = data.rows;
+                var result = data.rows;
             }
 
             callback(err, (err ? err.httpCode : 200), result || err);
@@ -93,7 +102,7 @@ function listarCliente(params, callback) {
 
 
 function excluirCliente(params, callback) {
-    console.log(params.idCliente)
+    // console.log(params.idCliente)
     pg.query("SELECT * FROM PUBLIC.EXCLUIRCLIENTE($1);",
         [
             params.idCliente
@@ -124,19 +133,28 @@ function alterarCliente(params, callback) {
     // TRATAMENTO DAS VARIAVEIS
     params.cpfCliente = params.cpfCliente.replace(".", "").replace(".", "");
     params.cpfCliente = params.cpfCliente.replace("-", "");
+    params.cep = params.cep.replace(".", "").replace("-", "");
     if (params.sexo == 'Feminino') {
         params.sexo = 'F';
     } else {
         params.sexo = 'M';
     }
 
-    pg.query("SELECT * FROM PUBLIC.ALTERARCLIENTE($1, $2, $3, $4, $5);",
+    pg.query("SELECT * FROM PUBLIC.ALTERARCLIENTE($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);",
         [
             params.idCliente,
             params.nomeCliente,
             params.cpfCliente,
             params.dataNascimento,
-            params.sexo
+            params.sexo,
+            params.cep,
+            params.rua,
+            params.numero,
+            params.bairro,
+            params.complemento,
+            params.cidade,
+            params.idTipoTelefone,
+            params.telefone
         ], (err, data) => {
             // if (err) {
             //     console.log(err)
@@ -148,11 +166,13 @@ function alterarCliente(params, callback) {
                 err = {
                     sucess: false,
                     httpCode: 500,
-                    message: `Erro ao inserir cliente: ERROR (' ${err.message} ')`
+                    message: `Erro ao alterar cliente: ERROR (' ${err.message} ')`
                 };
             }
 
-            let result = data.rows[0].alterarcliente;
+            if (!err) {
+                var result = data.rows[0].alterarcliente;
+            }
             callback(err, (err ? err.httpCode : 200), result || err);
         }
     );
