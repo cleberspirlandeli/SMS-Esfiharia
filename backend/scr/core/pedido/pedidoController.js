@@ -9,15 +9,15 @@ const PedidoRepository = require('./PedidoRepository.js');
 module.exports = {
     inserirPedido,
     listarPedido,
-    excluirPedido,
+    //excluirPedido,
     alterarPedido
 };
 
 function inserirPedido(req, res) {
 
     const params = {
-        idCliente: req.params.idCliente ? req.params.idCliente : null,
-        idStatusPedido: req.params.idStatusPedido ? req.params.idStatusPedido : null
+        idCliente: req.params.idCliente ? parseInt(req.params.idCliente) : null,
+        idStatusPedido: req.params.idStatusPedido ? parseInt(req.params.idStatusPedido) : null
     };
 
     async.waterfall([
@@ -53,9 +53,10 @@ function inserirPedido(req, res) {
 function listarPedido(req, res) {
 
     const params = {
-        idPedido: req.params.idPedido ? req.params.idPedido : null
+        idCliente: req.query.cliente ? parseInt(req.query.cliente) : null,
+        idPedido:  req.query.pedido  ? parseInt(req.query.pedido)  : null
     };
-    //console.log(params.idPedido);
+
     async.waterfall([
         (callback) => {
             PedidoValidation.listarPedido(params, (err, httpCode, result) => {
@@ -85,6 +86,43 @@ function listarPedido(req, res) {
 }
 
 
+function alterarPedido(req, res) {
+
+    const params = {
+        idPedido: req.params.idPedido ? parseInt(req.params.idPedido) : null,
+        idStatusPedido: req.params.idStatusPedido ? parseInt(req.params.idStatusPedido) : null
+    };
+
+    async.waterfall([
+        (callback) => {
+            PedidoValidation.alterarPedido(params, (err, httpCode, result) => {
+                if (err) {
+                    callback(err, httpCode, result);
+                } else {
+                    callback(null, httpCode, result);
+                }
+            });
+        },
+        (httpCode, result, callback) => {
+            PedidoRepository.alterarPedido(params, (err, httpCode, result) => {
+                if (err) {
+                    callback(err, httpCode, result);
+                } else {
+                    callback(null, httpCode, result);
+                }
+            });
+        }
+    ], (err, httpCode, result) => {
+        if (err) {
+            res.status(httpCode).json({ data: result });
+        } else {
+            res.status(httpCode).json({ data: result });
+        }
+    });
+}
+
+
+/*
 function excluirPedido(req, res) {
     const params = {
         idPedido: req.params.idPedido ? req.params.idPedido : null
@@ -117,50 +155,4 @@ function excluirPedido(req, res) {
         }
     });
 }
-
-
-function alterarPedido(req, res) {
-
-    const params = {
-        idPedido: req.params.idPedido ? req.params.idPedido : null,
-        nomePedido: req.body.nomePedido ? req.body.nomePedido : null,
-        cpfPedido: req.body.cpfPedido ? req.body.cpfPedido : null,
-        dataNascimento: req.body.dataNascimento ? req.body.dataNascimento : null,
-        sexo: req.body.sexo ? req.body.sexo : null,
-        cep: req.body.cep ? req.body.cep : null,
-        rua: req.body.rua ? req.body.rua : null,
-        numero: req.body.numero ? req.body.numero : null,
-        bairro: req.body.bairro ? req.body.bairro : null,
-        cidade: req.body.cidade ? req.body.cidade : null,
-        complemento: req.body.complemento ? req.body.complemento : null,
-        idTipoTelefone: req.body.idTipoTelefone ? req.body.idTipoTelefone : null,
-        telefone: req.body.telefone ? req.body.telefone : null
-    };
-
-    async.waterfall([
-        (callback) => {
-            PedidoValidation.alterarPedido(params, (err, httpCode, result) => {
-                if (err) {
-                    callback(err, httpCode, result);
-                } else {
-                    callback(null, httpCode, result);
-                }
-            });
-        },
-        (httpCode, result, callback) => {
-            PedidoRepository.alterarPedido(params, (err, httpCode, result) => {
-                if (err) {
-                    callback(err, httpCode, result);
-                } else {
-                    callback(null, httpCode, result);
-                }
-            });
-        }
-    ], (err, httpCode, result) => {
-        if (err) {
-            res.status(httpCode).json({ data: result });
-        } else {
-            res.status(httpCode).json({ data: result });
-        }
-    });
-}
+*/

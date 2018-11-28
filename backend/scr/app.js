@@ -17,4 +17,5 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //app.use(express.static(path.join(__dirname, 'public')));
 
 require('./../scr/route/cliente.js')(app);
+require('./../scr/route/pedido')(app);
 module.exports = app;

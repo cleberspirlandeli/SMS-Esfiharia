@@ -10,9 +10,9 @@ const pg = new Pool({ connectionString: connectionString });
 
 module.exports = {
     inserirPedido,
-    //listarPedido,
+    listarPedido,
     //excluirPedido,
-    //alterarPedido
+    alterarPedido
 };
 
 function inserirPedido(params, callback) {
@@ -20,20 +20,10 @@ function inserirPedido(params, callback) {
     // TRATAMENTO DAS VARIAVEIS
     let row;
 
-    pg.query("SELECT * FROM PUBLIC.INSERIRPedido($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);",
+    pg.query("SELECT * FROM PUBLIC.INSERIRPEDIDO($1, $2);",
         [
-            params.nomePedido,
-            params.cpfPedido,
-            params.dataNascimento,
-            params.sexo,
-            params.cep,
-            params.rua,
-            params.numero,
-            params.bairro,
-            params.cidade,
-            params.complemento,
-            params.idTipoTelefone,
-            params.telefone
+            params.idCliente,
+            params.idStatusPedido
         ], (err, data) => {
             // if (err) {
             //     console.log(err)
@@ -56,7 +46,7 @@ function inserirPedido(params, callback) {
                 };
             }
             if (!err) {
-                row = data.rows[0].inserirPedido;
+                row = data.rows[0].inserirpedido;
             }
             callback(err, (err ? err.httpCode : 201), row || err);
 
@@ -66,10 +56,10 @@ function inserirPedido(params, callback) {
 
 
 function listarPedido(params, callback) {
-    //console.log(params.idPedido);
 
-    pg.query("SELECT * FROM PUBLIC.LISTARPedido($1);",
+    pg.query("SELECT * FROM PUBLIC.LISTARPEDIDO($1, $2);",
         [
+            params.idCliente,
             params.idPedido
         ], (err, data) => {
             // if (err) {
@@ -77,8 +67,12 @@ function listarPedido(params, callback) {
             // } else {
             //     console.log(data)
             // }
-
-            if (data.rows.length == 0) {
+            if (err) {
+                err = {
+                    httpCode: 500,
+                    message: `Erro ao tentar listar os pedidos [PedidoRepository.js] - Error: ${err.message}`
+                };
+            } else if (data.rows.length == 0) {
                 err = {
                     httpCode: 204,
                     message: 'Pedido não encontrado.'
@@ -93,6 +87,38 @@ function listarPedido(params, callback) {
 }
 
 
+function alterarPedido(params, callback) {
+
+    // TRATAMENTO DAS VARIAVEIS
+    pg.query("SELECT * FROM PUBLIC.ALTERARPEDIDO($1, $2);",
+        [
+            params.idPedido,
+            params.idStatusPedido
+        ], (err, data) => {
+            // if (err) {
+            //     console.log(err)
+            // } else {
+            //     console.log(data)
+            // }
+
+            if (err) {
+                err = {
+                    sucess: false,
+                    httpCode: 500,
+                    message: `Erro ao alterar Pedido: ERROR (' ${err.message} ')`
+                };
+            }
+
+            if (!err) {
+                var result = data.rows[0].alterarpedido;
+            }
+            callback(err, (err ? err.httpCode : 200), result || err);
+        }
+    );
+}
+
+
+/*
 function excluirPedido(params, callback) {
     // console.log(params.idPedido)
     pg.query("SELECT * FROM PUBLIC.EXCLUIRPedido($1);",
@@ -118,54 +144,4 @@ function excluirPedido(params, callback) {
         }
     );
 }
-
-
-function alterarPedido(params, callback) {
-
-    // TRATAMENTO DAS VARIAVEIS
-    params.cpfPedido = params.cpfPedido.replace(".", "").replace(".", "");
-    params.cpfPedido = params.cpfPedido.replace("-", "");
-    params.cep = params.cep.replace(".", "").replace("-", "");
-    if (params.sexo == 'Feminino') {
-        params.sexo = 'F';
-    } else {
-        params.sexo = 'M';
-    }
-
-    pg.query("SELECT * FROM PUBLIC.ALTERARPedido($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);",
-        [
-            params.idPedido,
-            params.nomePedido,
-            params.cpfPedido,
-            params.dataNascimento,
-            params.sexo,
-            params.cep,
-            params.rua,
-            params.numero,
-            params.bairro,
-            params.complemento,
-            params.cidade,
-            params.idTipoTelefone,
-            params.telefone
-        ], (err, data) => {
-            // if (err) {
-            //     console.log(err)
-            // } else {
-            //     console.log(data)
-            // }
-
-            if (err) {
-                err = {
-                    sucess: false,
-                    httpCode: 500,
-                    message: `Erro ao alterar Pedido: ERROR (' ${err.message} ')`
-                };
-            }
-
-            if (!err) {
-                var result = data.rows[0].alterarPedido;
-            }
-            callback(err, (err ? err.httpCode : 200), result || err);
-        }
-    );
-}
+*/

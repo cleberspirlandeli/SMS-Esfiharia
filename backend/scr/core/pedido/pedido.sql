@@ -66,53 +66,61 @@ LANGUAGE plpgsql;
 
 
 -- ----------------------------------------------------------
-CREATE OR REPLACE FUNCTION PUBLIC.LISTARCLIENTE(pIdCliente INTEGER)
+CREATE OR REPLACE FUNCTION PUBLIC.LISTARPEDIDO(
+    pIdCliente INTEGER,
+    pIdPedido  INTEGER
+)
   RETURNS TABLE(
     "idcliente"    	            PUBLIC.CLIENTE.idcliente%TYPE,
     "nome"  	                PUBLIC.CLIENTE.nome%TYPE,
     "cpf"   	                PUBLIC.CLIENTE.cpf%TYPE,
-    "datanascimento"  	        PUBLIC.CLIENTE.datanascimento%TYPE,
-    "sexo"  	                VARCHAR,
-    "datacadastro"              PUBLIC.CLIENTE.datacadastro%TYPE
+    "nomestatuspedido"  	    PUBLIC.TIPOSTATUSPEDIDO.nomestatuspedido%TYPE,
+    "telefone"  	            PUBLIC.TELEFONE.telefone%TYPE,
+    "tipotelefone"              PUBLIC.TIPOTELEFONE.nometipotelefone%TYPE
   ) AS $$
 
 /*
 Documentação
-Arquivo Fonte.....: cliente.sql
-Objetivo..........: Listar todos os clientes ou um especifico
+Arquivo Fonte.....: pedido.sql
+Objetivo..........: Listar todos os pedidos ou um especifico
 Autor.............: Cleber Rezende Spirlandeli
 Data..............: 24/11/2018
 Ex................:
-                    SELECT * FROM PUBLIC.LISTARCLIENTE(null);
-                    SELECT * FROM PUBLIC.LISTARCLIENTE(14);
+                    SELECT * FROM PUBLIC.LISTARPEDIDO(null, null);
+                    SELECT * FROM PUBLIC.LISTARPEDIDO(14, null);
+                    SELECT * FROM PUBLIC.LISTARPEDIDO(null, 2);
 */
 --DECLARE vIdCliente  INTEGER = public.descriptografar(pIdCliente);
 
 BEGIN
 
   RETURN QUERY
-  	SELECT 
-        c.idCliente 	                    AS idcliente,
-        c.nome 					            AS nome,
-        c.cpf            				    AS cpf,
-        c.datanascimento                    AS datanascimento,
-        (
-            CASE 
-                WHEN C.sexo = 'F' THEN
-                    'Feminino' ::VARCHAR
-                ELSE
-                    'Masculino' ::VARCHAR
-            END
-        )                                   AS sexo,
-        c.datacadastro                      AS datacadastro
-    FROM Public.Cliente c
-	WHERE
+    SELECT  CLI.idcliente           AS idcliente,
+            CLI.nome                AS nome,
+            CLI.cpf                 AS cpf,
+            TSP.nomestatuspedido    AS nomestatuspedido,
+            TEL.telefone            AS telefone,
+            TTE.nometipotelefone    AS tipotelefone    
+    FROM PUBLIC.CLIENTE CLI
+    INNER JOIN PUBLIC.PEDIDO PED ON PED.idcliente = CLI.idcliente
+    INNER JOIN PUBLIC.TIPOSTATUSPEDIDO TSP ON TSP.idstatuspedido = PED.idstatuspedido
+    LEFT JOIN PUBLIC.TELEFONE TEL ON TEL.idcliente = CLI.idcliente
+    LEFT JOIN PUBLIC.TIPOTELEFONE TTE ON TTE.idtipotelefone = TEL.idtipotelefone
+    WHERE TSP.idstatuspedido <> 8 
+        AND
         CASE 
             WHEN pIdCliente IS NOT NULL THEN
-                c.idcliente = pIdCliente
+                CLI.idcliente = pIdCliente       
             ELSE
                 TRUE
-            END;
+            END 
+        AND 
+        CASE 
+            WHEN pIdPedido IS NOT NULL THEN
+                PED.idpedido = pIdPedido       
+            ELSE
+                TRUE
+            END ;
 END;
 $$
 LANGUAGE plpgsql;
@@ -127,7 +135,7 @@ RETURNS JSON AS $$
 
 /*
 Documentação
-Arquivo Fonte.....: cliente.sql
+Arquivo Fonte.....: pedido.sql
 Objetivo..........: Excluir cliente
 Autor.............: Cleber Rezende Spirlandeli
 Data..............: 24/11/2018
@@ -173,33 +181,20 @@ LANGUAGE plpgsql;
 
 
 -- ----------------------------------------------------------
-CREATE OR REPLACE FUNCTION PUBLIC.ALTERARCLIENTE(
+CREATE OR REPLACE FUNCTION PUBLIC.ALTERARPEDIDO(
     -- CLIENTE
-    pIdCliente          INTEGER,
-    pNomeCliente        PUBLIC.CLIENTE.nome%TYPE,
-    pCpfCliente         PUBLIC.CLIENTE.cpf%TYPE,
-    pDataNascimento     PUBLIC.CLIENTE.datanascimento%TYPE,
-    pSexo               VARCHAR,
-    --ENDERECO
-    pCep                PUBLIC.ENDERECO.cep%TYPE,
-    pRua                PUBLIC.ENDERECO.rua%TYPE,
-    pNumero             PUBLIC.ENDERECO.numero%TYPE, 
-    pBairro             PUBLIC.ENDERECO.bairro%TYPE,
-    pComplemento        PUBLIC.ENDERECO.complemento%TYPE,        
-    pCidade             PUBLIC.ENDERECO.cidade%TYPE,
-    --TELEFONE
-    pIdTipoTelefone     INTEGER,
-    pTelefone           PUBLIC.TELEFONE.telefone%TYPE   
+    pIdPedido           INTEGER,
+    pIdStatusPedido     INTEGER
 )
 RETURNS JSON AS $$
 /*
 Documentação
-Arquivo Fonte.....: cliente.sql
-Objetivo..........: Alterar dados do cliente
+Arquivo Fonte.....: pedido.sql
+Objetivo..........: Alterar Status do pedido
 Autor.............: Cleber Rezende Spirlandeli
-Data..............: 24/11/2018
+Data..............: 27/11/2018
 Ex................:
-                    SELECT * FROM PUBLIC.ALTERARCLIENTE();
+                    SELECT * FROM PUBLIC.ALTERARCLIENTE(15,3);
 */
 DECLARE --vIdCliente  INTEGER = public.descriptografar(pIdCliente);
         vErrorProcedure             TEXT;
@@ -207,46 +202,24 @@ DECLARE --vIdCliente  INTEGER = public.descriptografar(pIdCliente);
 
 BEGIN
 
-    IF EXISTS (SELECT 1 FROM PUBLIC.CLIENTE WHERE IDCLIENTE = pIdCliente) THEN
-        IF pSexo = 'Feminino' AND pSexo IS NOT NULL THEN
-            pSexo := 'F';
-        ELSE
-            pSexo := 'M';
-        END IF;
+    IF EXISTS (SELECT 1 FROM PUBLIC.PEDIDO WHERE IDPEDIDO = pIdPedido) THEN
 
-        UPDATE PUBLIC.CLIENTE
-        SET     nome = pNomeCliente,
-                cpf  = pCpfCliente,
-                dataNascimento = pDataNascimento,
-                sexo = pSexo
-        WHERE   idCliente = pIdCliente;
-
-        UPDATE  PUBLIC.ENDERECO
-        SET     cep = pCep,
-                rua = pRua,
-                numero = pNumero,
-                bairro = pBairro,
-                complemento = pComplemento,
-                cidade = pCidade
-        WHERE   idCliente = pIdCliente;
-
-        UPDATE  PUBLIC.TELEFONE
-        SET     idtipotelefone = pIdTipoTelefone :: BIGINT,
-                telefone  = pTelefone    
-        WHERE   idCliente = pIdCliente;
+        UPDATE  PUBLIC.PEDIDO
+        SET     idstatuspedido = pIdStatusPedido
+        WHERE   idpedido = pIdPedido;
 
         RETURN
         json_build_object(
             'success', true,
-            'message', 'Cliente alterado com sucesso.',
-            'idCliente', pIdCliente
+            'message', 'Pedido alterado com sucesso.',
+            'idPedido', pIdPedido
         );
     ELSE
         RETURN
         json_build_object(
             'success', false,
-            'message', 'Cliente não encontrado.',
-            'idCliente', pIdCliente
+            'message', 'Pedido não encontrado.',
+            'idPedido', pIdPedido
         );
 	END IF;
 
@@ -258,3 +231,36 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+
+
+
+
+
+/***********************************************************/
+
+SELECT  CLI.idcliente,
+            CLI.nome,
+            CLI.cpf,
+            TEL.telefone,
+            TSP.nomestatuspedido,
+            TEL.telefone,
+            TTE.nometipotelefone
+    FROM PUBLIC.CLIENTE CLI
+    INNER JOIN PUBLIC.PEDIDO PED ON PED.idcliente = CLI.idcliente
+    INNER JOIN PUBLIC.TIPOSTATUSPEDIDO TSP ON TSP.idstatuspedido = PED.idstatuspedido
+    LEFT JOIN PUBLIC.TELEFONE TEL ON TEL.idcliente = CLI.idcliente
+    LEFT JOIN PUBLIC.TIPOTELEFONE TTE ON TTE.idtipotelefone = TEL.idtipotelefone
+    WHERE TSP.idstatuspedido <> 8 AND
+        CASE 
+            WHEN pIdCliente IS NOT NULL THEN
+                CLI.idcliente = pIdCliente       
+            ELSE
+                TRUE
+            END 
+        AND 
+        CASE 
+            WHEN pIdPedido IS NOT NULL THEN
+                PED.idpedido = pIdPedido       
+            ELSE
+                TRUE
+            END ;
