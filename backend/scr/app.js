@@ -45,10 +45,18 @@ app.get('/teste-sms', function (req, res) {
 });
 
 
-
+// Habilita o CORS
+app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, x-access-token');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    next();
+});
 
 
 
 require('./../scr/route/cliente.js')(app);
 require('./../scr/route/pedido')(app);
+require('./../scr/route/authentication')(app);
+
 module.exports = app;

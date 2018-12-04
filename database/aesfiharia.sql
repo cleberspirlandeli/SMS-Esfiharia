@@ -17,6 +17,13 @@ COMMENT ON DATABASE "esfiharia-desenv"
     IS 'Base de dados para desenvolvimento e testes para empresa A Esfiharia. Projeto SMS Esfiharia.';
 	
 
+CREATE TABLE USUARIOSISTEMA (
+	idUsuarioSistema    BIGSERIAL PRIMARY KEY,
+	usuario			    VARCHAR(100) NOT NULL UNIQUE,
+	senha				VARCHAR(100) NOT NULL,
+	tipoUsuario 	    VARCHAR(30)  NOT NULL
+)
+
 
 
 CREATE TABLE CLIENTE (
@@ -79,3 +86,6 @@ VALUES
 
 ALTER TABLE PUBLIC.ENDERECO
 ADD COLUMN CIDADE VARCHAR(100);
+
+INSERT INTO USUARIOSISTEMA (usuario, senha, tipoUsuario)
+VALUES ('admin', MD5('12345'), 'ADMIN')
