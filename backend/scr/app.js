@@ -8,6 +8,8 @@ const path = require('path');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const allowCors = require('./../config/cors.js')
+const queryParser = require('express-query-int')
 
 // TWILIO
 const accountSid = 'AC8daeabea34f1857c50cef362e965df2b';
@@ -23,12 +25,13 @@ app.use(bodyParser.json({ limit: '5mb' }));
 app.use(bodyParser.urlencoded({ extended: false }));
 //app.use(cookieParser());
 //app.use(express.static(path.join(__dirname, 'public')));
+app.use(queryParser());
+app.use(allowCors)
 
 // A Esfiharia informa: Fabricio, seu pedido foi registrado, logo iremos iniciar a preparação!
 // A Esfiharia informa: Fabricio, seu pedido já esta em preparação, logo logo iremos entregar! :)
 // A Esfiharia informa: Fabricio, seu pedido já esta a caminho! Tenha uma ótima noite! Muito obrigado!
 app.get('/teste-sms', function (req, res) {
-
     client.messages
         .create({
             body: 'A Esfiharia informa: Fabricio, seu pedido já esta a caminho! Tenha uma ótima noite! Muito obrigado!',
@@ -43,16 +46,6 @@ app.get('/teste-sms', function (req, res) {
         )
         .done();
 });
-
-
-// Habilita o CORS
-app.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, x-access-token');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    next();
-});
-
 
 
 require('./../scr/route/cliente.js')(app);
