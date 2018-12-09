@@ -1,0 +1,60 @@
+nav {
+    background-color: #03A9F4;
+}
+
+nav .brand-logo {
+    padding-left: 30px;
+}
+
+
+
+/* MOBILE */
+@media all and (min-width:0px) and (max-width: 768px) {
+    nav .brand-logo {
+        padding-left: 0px;
+    }
+
+    .side-nav a {
+        padding: 10px 16px;
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .padding-top{
+        padding-top: 30px;
+        font-size: 20px;
+    }
+}
+  
+
+/*
+aside.logo{
+    background-color: #03A9F4;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+aside.logo img {
+    padding: 0px 15px;
+    width: 100%;
+}
+
+a{
+    text-decoration: none;
+}
+*/
+/*
+#teste{
+    text-shadow: rgb(2, 118, 171) 0px 0px 0px, rgb(2, 120, 174) 1px 1px 0px, rgb(2, 122, 177) 2px 2px 0px, rgb(2, 124, 180) 3px 3px 0px, rgb(2, 126, 183) 4px 4px 0px, rgb(2, 128, 185) 5px 5px 0px, rgb(2, 130, 188) 6px 6px 0px, rgb(2, 132, 191) 7px 7px 0px, rgb(2, 135, 194) 8px 8px 0px, rgb(2, 137, 197) 9px 9px 0px, rgb(2, 139, 200) 10px 10px 0px, rgb(2, 141, 203) 11px 11px 0px, rgb(3, 143, 206) 12px 12px 0px, rgb(3, 145, 209) 13px 13px 0px, rgb(3, 147, 212) 14px 14px 0px, rgb(3, 149, 215) 15px 15px 0px, rgb(3, 151, 218) 16px 16px 0px, rgb(3, 153, 221) 17px 17px 0px, rgb(3, 155, 224) 18px 18px 0px, rgb(3, 157, 226) 19px 19px 0px, rgb(3, 159, 229) 20px 20px 0px, rgb(3, 161, 232) 21px 21px 0px, rgb(3, 163, 235) 22px 22px 0px, rgb(3, 165, 238) 23px 23px 0px, rgb(3, 167, 241) 24px 24px 0px; font-size: 35px; color: rgb(255, 255, 255);
+    font-size: 40px; 
+    color: 
+    rgb(255, 255, 255); 
+    height: 70px; 
+    width: 70px; 
+    line-height: 70px;
+    border-radius: 0%; 
+    text-align: center; 
+    background-color: rgb(3, 169, 244);
+}
+*/
