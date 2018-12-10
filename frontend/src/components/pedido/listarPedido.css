@@ -16,8 +16,8 @@
 @media all and (min-width:0px) and (max-width: 600px) {
     #add-pedido2{
         display:inline-block;
-        overflow: auto;
-        white-space: nowrap;
+        /* overflow: auto; */
+        /* white-space: nowrap; */
         margin:-2em 2em;
     }
     .row .col.s9 {
@@ -27,8 +27,8 @@
 @media all and (min-width:601px) and (max-width: 768px) {
     #add-pedido2{
         display:inline-block;
-        overflow: auto;
-        white-space: nowrap;
+        /* overflow: auto; */
+        /* white-space: nowrap; */
         margin:-2em 4.2em;
     }
 }

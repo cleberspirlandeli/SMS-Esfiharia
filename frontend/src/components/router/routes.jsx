@@ -6,8 +6,7 @@ import ListarPedido from '../pedido/listarPedido'
 
 export default props =>
     <Switch>
-        <Route exact path='/' component={ListarPedido} />
-        <Route path='/cadastrar-cliente' component={ListarPedido} />
-        <Redirect from='*' to='/' />
-
+        <Route exact path='/listar-pedidos' component={ListarPedido} />
+        <Route path='/cadastrar-clientes' component={CadastrarCliente} />
+        <Redirect from='*' to='/listar-pedidos' />
     </Switch>
