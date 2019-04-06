@@ -9,6 +9,16 @@ export default props =>
         </Row>
 
         <Button
+            floating
+            large
+            className='blue right'
+            waves='light'
+            icon='check'
+            onClick={props.handleAdd}
+            style={{ bottom: '28px', right: '270px' }}
+        />
+
+        {/* <Button
             id="add-pedido2"
             onClick={() => console.log('click add Pedido')}
             floating
@@ -16,7 +26,7 @@ export default props =>
             className='blue right'
             waves='light'
             icon='add'
-        />
+        /> */}
         <Collection className="container">
             <CollectionItem>
                 <Row>

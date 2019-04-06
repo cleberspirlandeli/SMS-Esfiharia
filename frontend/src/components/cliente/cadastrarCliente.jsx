@@ -1,15 +1,29 @@
 import './cadastrarCliente.css'
-import { Input, Row, Col, Collapsible, CollapsibleItem } from 'react-materialize'
+import { Input, Row, Col, Collapsible, CollapsibleItem, Button } from 'react-materialize'
 import React from 'react'
 
-export default props =>
+export default props => (
+
     <Row className="container">
         <h4 className="center">CADASTRO DE CLIENTES</h4>
+
+        <Button
+            floating
+            large
+            className='blue right'
+            waves='light'
+            icon='check'
+            onClick={props.handleAdd}
+            style={{ bottom: '28px', right: '24px' }}
+        />
+
         <Collapsible accordion defaultActiveKey={0}>
 
             <CollapsibleItem header='Dados Pessoais' icon='account_circle'>
-
                 <Row>
+                    <Col s={12}>
+                        <Input type="number" s={12} l={4} label="Nº Pedido" />
+                    </Col>
                     <Col s={12}>
                         <Input s={12} l={8} label="Nome" />
                         <Input s={12} l={4} label="Telefone" />
@@ -36,6 +50,6 @@ export default props =>
                     </Col>
                 </Row>
             </CollapsibleItem>
-
         </Collapsible>
     </Row>
+)

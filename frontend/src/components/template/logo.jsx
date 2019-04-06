@@ -10,24 +10,24 @@ export default props =>
 
             <Row className="padding-top">
                 <Col s={12}>
-                    <NavItem
-                        onClick={() => console.log('click Pedidos')}
-                    >
+                    <NavItem onClick={() => console.log('click Pedidos')}>
                         <Link to="listar-pedidos">
                             <Icon left tiny>restaurant</Icon>
                             Pedidos
-                    </Link>
+                        </Link>
                     </NavItem>
-                    <NavItem href='#'>
+
+                    <NavItem className='Teste'>
                         <Link to="cadastrar-clientes">
                             <Icon left tiny>people</Icon>
                             Clientes
-                    </Link>
+                        </Link>
                     </NavItem>
-                    <NavItem href='#'>
+
+                    <NavItem>
                         <Icon left tiny>input</Icon>
                         Sair
-                </NavItem>
+                    </NavItem>
                 </Col>
             </Row>
         </Navbar>
