@@ -31,19 +31,19 @@ app.use(function (req, res, next) {
 // Midleware para validar o TOKEN
 // É possível colocar um IF e verificar se a rota for a rota de login pular a validação,
 // como no exemplo do method Options
-app.all('/api/*', function (req, res, next) {
-    if (req.method !== 'OPTIONS') {
-        Login.validarToken(req, res, next);
-    }else{
-        res.end();
-    }
-});
+// app.all('/api/*', function (req, res, next) {
+//     if (req.method !== 'OPTIONS') {
+//         Login.validarToken(req, res, next);
+//     }else{
+//         res.end();
+//     }
+// });
 
 // É possível colocar um outro midleware para todas as requisições, que após ser realizado a resposta ao cliente
 // o midleware é chamado e insere todo o body em uma tabela de monitoramento por exemplo
 // Um banco relacional ou um banco noSql
 
-//require('./../route/login.js')(app);
+require('./../route/funcionalidadeRoute')(app);
 
 
 module.exports = app;

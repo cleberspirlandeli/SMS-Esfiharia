@@ -1,25 +1,20 @@
+
+
 module.exports = {
     listarFuncionalidade
 };
 
-function listarFuncionalidade(req, res) {
-    try {
-        let pool = await sql.connect(config)
-        let result1 = await pool.request()
-            .input('input_parameter', sql.Int, value)
-            .query('select * from mytable where id = @input_parameter')
-            
-        console.dir(result1)
-    
-        // Stored procedure
-        
-        let result2 = await pool.request()
-            .input('input_parameter', sql.Int, value)
-            .output('output_parameter', sql.VarChar(50))
-            .execute('procedure_name')
-        
-        console.dir(result2)
-    } catch (err) {
-        // ... error checks
-    }
+function listarFuncionalidade(params, transaction, callback) {
+
+    new sql.Request(transaction)
+        .input('idempresa', params.idUsuario)
+        .execute('LISTAR_EMPRESA', (err, recordset) => {
+            if (err) {
+                console.log(err)
+                callback(500, { informacao: 'Erro Ao Criar Novo Condominio' });
+            }
+            else {
+                callback(null, { informacao: 'Condominio Criado Com Sucesso' });
+            }
+        });
 }
