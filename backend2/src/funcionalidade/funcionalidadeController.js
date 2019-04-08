@@ -20,22 +20,21 @@ function listarFuncionalidade(req, res) {
         // return pool.request()
         //     .query('select * from empresa')
 
-
         // Stored procedure
         return pool.request()
-            .input('idempresa', sql.Int, null)
-            .execute('LISTAR_EMPRESA')
+            .input('idempresaa', sql.Int, null)
+            .execute('LISTAR_EMPRESA');
     }).then(result => {
         console.dir(result.recordset)
-
-
+        res.status(200).json(result.recordset)
     }).catch(err => {
         console.log(err)
+        res.status(500).json({err: err.message})
     })
 
-    sql.on('error', err => {
-        console.log(err)
-    })
+    // sql.on('error', err => {
+    //     console.log(err)
+    // })
 
 
 
