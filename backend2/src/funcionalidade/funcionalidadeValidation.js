@@ -3,24 +3,34 @@
  */
 'use strict'
 
-const ValidatiorParams = require('./../bin/validation.js');
+const ValidatiorParams = require('../bin/validation.js');
 
 module.exports = {
-    listarFuncionalidade
-    // listarCliente,
-    // excluirCliente,
-    // alterarCliente
+    listarCliente,
+    // editarCliente,
+    // inserirCliente,
+    // removerCliente
 };
 
 
-async function listarFuncionalidade(params, callback) {
+async function listarCliente(params, callback) {
     let valParams = new ValidatiorParams();
     valParams.clear();
 
     // ID Cliente
-    valParams.isMinLen(params.idUsuario, 0, 'O identificado do cliente deve ser maior que 0 (zero)');
-    valParams.isMaxLen(params.idUsuario, 100, 'O identificado do cliente deve ser menor que 100 (cem)');
+    valParams.isNumber(params.idCliente, 'O identificador do cliente deve ser um número')
+    valParams.isMinLen(params.idCliente, 0, 'O identificado do cliente deve ser maior que 0 (zero)');
+    valParams.isMaxLen(params.idCliente, 100, 'O identificado do cliente deve ser menor que 100 (cem)');
 
+    // Nome Usuario
+    valParams.isString(params.nomeCliente1, 'O nome do cliente deve conter somente letras')
+    valParams.isMinLen(params.nomeCliente1, 3, 'O nome do cliente deve ter no minímo três caracteres');
+    valParams.isMaxLen(params.nomeCliente1, 80, 'O nome do cliente deve ter no maxímo oitenta caracteres');    
+
+    // Nome Usuario 2
+    valParams.isString(params.nomeCliente2, 'O nome do cliente deve conter somente letras')
+    valParams.isMinLen(params.nomeCliente2, 3, 'O nome do cliente deve ter no minímo três caracteres');
+    valParams.isMaxLen(params.nomeCliente2, 80, 'O nome do cliente deve ter no maxímo oitenta caracteres');    
 
     // Se os dados forem inválidos
     if (!valParams.isValid()) {
@@ -29,80 +39,3 @@ async function listarFuncionalidade(params, callback) {
         callback(false, 200, null);
     }
 }
-
-
-// async function listarCliente(params, callback) {
-
-//     let valParams = new ValidatiorParams();
-//     valParams.clear();
-
-//     // ID Cliente
-//     valParams.isString(params.idCliente, 'O identificado do cliente deve ser um texto');
-//     valParams.isMinLen(params.idCliente, 0, 'O identificado do cliente deve ser maior que 0 (zero)');
-//     valParams.isMaxLen(params.idCliente, 100, 'O identificado do cliente deve ser menor que 100 (cem)');
-
-//     // Se os dados forem inválidos
-//     if (!valParams.isValid()) {
-//         callback(true, 400, valParams.errors());
-//     } else {
-//         callback(false, 200, null);
-//     }
-// }
-
-
-// async function excluirCliente(params, callback) {
-
-//     let valParams = new ValidatiorParams();
-//     valParams.clear();
-
-//     // ID cliente
-//     valParams.isRequired(params.idCliente, 'Identificado do cliente é obrigatório');
-//     valParams.isString(params.idCliente, 'O identificado do cliente deve ser um texto');
-//     valParams.isMinLen(params.idCliente, 0, 'O identificado do cliente deve ser maior que 0 (zero)');
-//     valParams.isMaxLen(params.idCliente, 100, 'O identificado do cliente deve ser menor que 100 (cem)');
-
-
-//     // Se os dados forem inválidos
-//     if (!valParams.isValid()) {
-//         callback(true, 400, valParams.errors());
-//     } else {
-//         callback(false, 200, null);
-//     }
-// }
-
-
-// async function alterarCliente(params, callback) {
-//     let valParams = new ValidatiorParams();
-//     valParams.clear();
-
-//     // ID Cliente
-//     valParams.isRequired(params.idCliente, 'Identificado do cliente é obrigatório');
-//     valParams.isString(params.idCliente, 'O identificado do cliente deve ser um texto');
-//     valParams.isMinLen(params.idCliente, 0, 'O identificado do cliente deve ser maior que 0 (zero)');
-//     valParams.isMaxLen(params.idCliente, 100, 'O identificado do cliente deve ser menor que 100 (cem)');
-
-//     // Nome Cliente
-//     valParams.isRequired(params.nomeCliente, 'O nome do cliente é obrigatório');
-//     valParams.isString(params.nomeCliente, 'O nome do cliente deve ser um texto');
-//     valParams.isMinLen(params.nomeCliente, 2, 'O nome do cliente deve ser maior que 2 (dois)');
-//     valParams.isMaxLen(params.nomeCliente, 100, 'O nome do cliente deve ser menor que 100 (cem)');
-
-//     // CPF Cliente
-//     valParams.isCpf(params.cpfCliente, 'O CPF do cliente é inválido');
-//     valParams.isFixedLen(params.cpfCliente, 14, 'O CPF do cliente deve ter 14 caracteres');
-
-//     // Data Nascimento
-//     valParams.isFixedLen(params.dataNascimento, 10, 'Data de nascimento incorreto');
-
-//     // Sexo
-//     valParams.isString(params.sexo, 'O sexo do cliente deve ser um texto');
-//     valParams.isMinLen(params.sexo, 8, 'O sexo do cliente deve ser Masculino ou Feminino');
-//     valParams.isMaxLen(params.sexo, 9, 'O sexo do cliente deve ser Masculino ou Feminino');
-
-//     // Se os dados forem inválidos
-//     if (!valParams.isValid()) {
-//         callback(true, 400, valParams.errors());
-//     } else {
-//         callback(false, 200, null);
-//     }
-// }
