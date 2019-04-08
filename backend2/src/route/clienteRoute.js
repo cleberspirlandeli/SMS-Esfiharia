@@ -1,9 +1,9 @@
-const FuncionalidadeCtrl = require('./../funcionalidade/funcionalidadeController');
+const ClienteController = require('../cliente/ClienteController');
 
 module.exports = function (app) {
 
-    app.route('/api/funcionalidade/:idUsuario')
-        .get(FuncionalidadeCtrl.listarFuncionalidade);
+    app.route('/cliente/:idCliente')
+        .get(ClienteController.listarCliente);
         // .post(ColaboradorCtrl.inserirColaborador);
 
 //     app.route('/api/colaborador/:id')

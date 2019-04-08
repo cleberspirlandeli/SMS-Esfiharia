@@ -43,7 +43,7 @@ app.use(function (req, res, next) {
 // o midleware é chamado e insere todo o body em uma tabela de monitoramento por exemplo
 // Um banco relacional ou um banco noSql
 
-require('./../route/funcionalidadeRoute')(app);
+require('./../route/clienteRoute')(app);
 
 
 module.exports = app;
