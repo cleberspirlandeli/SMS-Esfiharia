@@ -3,8 +3,8 @@
  */
 'use strict'
 const async = require('async');
-const ClienteValidation = require('./clienteValidation.js.js');
-const ClienteRepository = require('./clienteRepository.js.js');
+const ClienteValidation = require('./clienteValidation.js');
+const ClienteRepository = require('./clienteRepository.js');
 
 module.exports = {
     listarCliente,
@@ -16,7 +16,7 @@ module.exports = {
 function listarCliente(req, res) {
  
     let params = {
-        idCliente: req.params.idCliente || null,
+        idCliente: parseInt(req.params.idCliente) || null,
         nomeCliente1: req.body.nomeCliente1 || null,
         nomeCliente2: req.query.nomeCliente2 || null
     }

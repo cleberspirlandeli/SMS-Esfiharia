@@ -28,7 +28,8 @@ async function listarCliente(params, callback) {
     valParams.isMaxLen(params.nomeCliente1, 80, 'O nome do cliente deve ter no maxímo oitenta caracteres');    
 
     // Nome Usuario 2
-    valParams.isString(params.nomeCliente2, 'O nome do cliente deve conter somente letras')
+    valParams.isNumber(params.nomeCliente1, 'O nome do cliente deve ser um número')
+    // valParams.isString(params.nomeCliente2, 'O nome do cliente deve conter somente letras')
     valParams.isMinLen(params.nomeCliente2, 3, 'O nome do cliente deve ter no minímo três caracteres');
     valParams.isMaxLen(params.nomeCliente2, 80, 'O nome do cliente deve ter no maxímo oitenta caracteres');    
 
