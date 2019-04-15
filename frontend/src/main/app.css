@@ -1,3 +1,28 @@
+.grid{
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-areas: 
+        "nav-materialize nav-materialize"
+        "content-materialize content-materialize"
+        "footer-materialize footer-materialize";
+}
+
+.nav-materialize{
+    grid-area: nav-materialize;
+}
+
+.sidebar-materialize{
+    grid-area: sidebar-materialize;
+}
+
+.content-materialize{
+    grid-area: content-materialize;
+}
+
+.footer-materialize{
+    grid-area: footer-materialize;
+}
+
 /*
 :root{
     --dg-dark: #1A2F3A;

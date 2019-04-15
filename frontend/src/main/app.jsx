@@ -2,12 +2,12 @@ import './app.css'
 import React, { Component } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 
-import Logo from './../components/template/logo'
 import Routes from './../components/router/routes'
 import Nav from './../components/template/nav'
-import Main from './../components/template/main'
-import CadastrarCliente from './../components/cliente/cadastrarCliente'
-import ListarPedido from '../components/pedido/listarPedido'
+import Footer from './../components/template/footer'
+import Sidebar from './../components/template/sidebar.jsx'
+// import CadastrarCliente from './../components/cliente/cadastrarCliente'
+// import ListarPedido from '../components/pedido/listarPedido'
 
 
 
@@ -20,12 +20,14 @@ export default class Todo extends Component {
 
     render() {
         return (
-            <div>
+            <div className="content-materialize">
 
                 <BrowserRouter>
-                    <div className="app">
-                        <Logo />
+                    <div className="grid">
+                        <Nav />
+                        <Sidebar />
                         <Routes handleAdd={this.handleAdd} />
+                        <Footer />
                     </div>
                 </BrowserRouter>
             </div>

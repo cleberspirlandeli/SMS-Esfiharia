@@ -4,7 +4,7 @@ import React from 'react'
 
 export default props => (
 
-    <Row className="container">
+    <Row className="container margin-bottom">
         <h4 className="center">CADASTRO DE CLIENTES</h4>
 
         <Button
