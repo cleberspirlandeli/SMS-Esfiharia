@@ -1,7 +1,7 @@
 import React from 'react'
 import {Switch, Route, Redirect} from 'react-router'
 
-import CadastrarCliente from '../cliente/cadastrarCliente'
+import CadastrarCliente from '../cliente/cliente'
 import ListarPedido from '../pedido/listarPedido'
 
 export default props =>

@@ -1,9 +1,9 @@
-.grid{
+/* .grid{
     display: grid;
     grid-template-columns: auto auto;
     grid-template-areas: 
         "nav-materialize nav-materialize"
-        "content-materialize content-materialize"
+        ".sidebar-materialize content-materialize"
         "footer-materialize footer-materialize";
 }
 
@@ -80,4 +80,4 @@ footer.footer{
     grid-area: footer;
 }
 
-*/
+*/ 

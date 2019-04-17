@@ -1,0 +1,6 @@
+nav ul a:hover {
+    background-color: rgba(0,0,0,0.1);
+}
+nav ul a a:hover {
+    background-color: transparent;
+}

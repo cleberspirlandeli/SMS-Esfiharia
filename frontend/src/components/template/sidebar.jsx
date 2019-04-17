@@ -1,4 +1,6 @@
 import React from 'react'
+import { SideNav, Button, Icon, SideNavItem } from 'react-materialize'
+// import { Link } from 'react-router-dom'
 import './sidebar.css'
 import imgOffice from './../../assets/imgs/office.jpg'
 import imgPeopple from './../../assets/imgs/yuna.jpg'
@@ -7,27 +9,33 @@ import imgPeopple from './../../assets/imgs/yuna.jpg'
 class Sidebar extends React.Component {
   render() {
     return (
-      <div>
-        <ul id="slide-out" className="sidenav">
-          <li><div className="user-view">
-            <div className="background">
-              <img src={imgOffice} alt="office" />
-            </div>
-            <a href="#"><img className="circle" src={imgPeopple} alt=""/></a>
-            <a href="#"><span className="white-text name">Cleber Rezende</span></a>
-            <a href="#"><span className="white-text email">Operador de Caixa</span></a>
-          </div>
-          </li>
-          <li><div className="divider"></div></li>
-          <li><a href="#" className="subheader">Menu</a></li>
-          <li><a href="#" className="waves-effect"><i className="material-icons">people</i>Clientes</a></li>
-          <li><a href="#" className="waves-effect"><i className="material-icons">restaurant</i>Pedidos</a></li>
-          <li><div className="divider"></div></li>
-          <li><a href="#" className="waves-effect"><i className="material-icons">input</i>Sair</a></li>
+      <div id="btn-sidebar">
+        <SideNav trigger={<Button className="z-depth-2"><Icon>menu</Icon></Button>} options={{ closeOnClick: true }}>
+          <SideNavItem userView user={{
+            background: imgOffice,
+            image: imgPeopple,
+            name: 'Cleber Rezende',
+            email: 'Operador de Caixa'
+          }} />
+          <SideNavItem subheader>
+            Menu
+          </SideNavItem>
 
-        </ul>
-        <a id="btn-sidebar" href="#" data-target="slide-out" className="sidenav-trigger btn z-depth-3"><i className="material-icons">menu</i></a>
-      </div>
+          <SideNavItem waves href="listar-pedidos" icon="home">
+            Início
+            </SideNavItem>
+          <SideNavItem waves href="cadastrar-clientes" icon="people">
+            Clientes
+          </SideNavItem>
+          <SideNavItem waves href="listar-pedidos" icon="restaurant">
+            Pedidos
+            </SideNavItem>
+          <SideNavItem divider />
+          <SideNavItem waves href="configuracoes" icon="build">
+            Configurações
+          </SideNavItem>
+        </SideNav>
+      </div >
     )
   }
 }

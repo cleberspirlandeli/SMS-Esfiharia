@@ -6,9 +6,6 @@ import Routes from './../components/router/routes'
 import Nav from './../components/template/nav'
 import Footer from './../components/template/footer'
 import Sidebar from './../components/template/sidebar.jsx'
-// import CadastrarCliente from './../components/cliente/cadastrarCliente'
-// import ListarPedido from '../components/pedido/listarPedido'
-
 
 
 //export default props =>

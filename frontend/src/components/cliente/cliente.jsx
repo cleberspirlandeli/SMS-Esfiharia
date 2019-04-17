@@ -1,5 +1,5 @@
-import './cadastrarCliente.css'
-import { Input, Row, Col, Collapsible, CollapsibleItem, Button } from 'react-materialize'
+import './cliente.css'
+import { TextInput, Input, Row, Col, Collapsible, CollapsibleItem, Button } from 'react-materialize'
 import React from 'react'
 
 export default props => (
