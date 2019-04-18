@@ -79,7 +79,7 @@ export default props => {
                                 s={12}
                                 l={4} />
                                 {formErrors.telefone.length > 0 && (
-                                    <span className="errorMessage">{formErrors.nome}</span>
+                                    <span className="errorMessage">{formErrors.telefone}</span>
                                 )}
 
                             <Input
@@ -91,7 +91,7 @@ export default props => {
                                 s={12}
                                 l={4} />
                                 {formErrors.dataNascimento.length > 0 && (
-                                    <span className="errorMessage">{formErrors.nome}</span>
+                                    <span className="errorMessage">{formErrors.dataNascimento}</span>
                                 )}
                             <Input
                                 id="cpf"
@@ -102,7 +102,7 @@ export default props => {
                                 s={12}
                                 l={4} />
                                 {formErrors.cpf.length > 0 && (
-                                    <span className="errorMessage">{formErrors.nome}</span>
+                                    <span className="errorMessage">{formErrors.cpf}</span>
                                 )}
                             <Input s={12} l={4} type='select' label="Sexo" defaultValue='2'>
                                 <option value='1'>Masculino</option>
