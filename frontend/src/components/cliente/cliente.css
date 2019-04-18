@@ -20,3 +20,20 @@ h4{
 .margin-bottom{
     margin-bottom: 50px;
 }
+
+.errorMessage {
+    color: red;
+    font-size: 0.75em;
+    display: relative;
+  }
+
+  .teste{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+
+    padding: 10px 10px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid #cfcfcf;
+  }
