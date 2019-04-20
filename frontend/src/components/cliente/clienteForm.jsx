@@ -59,7 +59,7 @@ export default props => {
 
                         </Col>
                         <Col s={12}>
-                            <Input className="teste"
+                            <Input className={formErrors.nome.length > 0 ? 'teste':''}
                                 id="nome"
                                 name="nome"
                                 label="Nome"
@@ -93,7 +93,7 @@ export default props => {
                                 {formErrors.dataNascimento.length > 0 && (
                                     <span className="errorMessage">{formErrors.dataNascimento}</span>
                                 )}
-                            <Input
+                            <Input 
                                 id="cpf"
                                 name="cpf"
                                 label="CPF"
